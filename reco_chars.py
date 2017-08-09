@@ -13,8 +13,8 @@ class CaffeCls(object):
                  model_weights,
                  y_tag_json_path,
                  is_mode_cpu=True,
-                 width=64,
-                 height=64):
+                 width=70,
+                 height=70):
         self.net = caffe.Net(model_def,
             model_weights,
             caffe.TEST)
@@ -36,7 +36,7 @@ class CaffeCls(object):
         self.net.blobs['data'].reshape(cv2_imgs_sub.shape[0], 1,
                                        self.width, self.height)
         self.net.blobs['data'].data[...] = cv2_imgs_sub.reshape(
-            (cv2_imgs_sub.shape[0], 1, self.width, self.height))
+           (cv2_imgs_sub.shape[0], 1, self.width, self.height))
         output = self.net.forward()
 
         output_tag_to_max_proba = []
@@ -284,16 +284,16 @@ def median_split_ranges(peek_ranges):
 
 if __name__ == "__main__":
 
-    norm_width = 64
-    norm_height = 64
+    norm_width =70 
+    norm_height=70 
 
-    base_dir = "/workspace/data/chongdata_caffe_cn_sim_digits_64_64"
-    model_def = os.path.join(base_dir, "deploy_lenet_train_test.prototxt")
-    model_weights = os.path.join(base_dir, "lenet_iter_50000.caffemodel")
+    base_dir = "/workspace"
+    model_def = os.path.join(base_dir, "lenet.prototxt")
+    model_weights = os.path.join(base_dir, "lenet_iter_10000.caffemodel")
     y_tag_json_path = os.path.join(base_dir, "y_tag.json")
     caffe_cls = CaffeCls(model_def, model_weights, y_tag_json_path)
 
-    test_image = "/opt/deep_ocr/test_data.png"
+    test_image = "/opt/deep_ocr/zh.png"
 
     debug_dir = "/tmp/debug_dir"
     if debug_dir is not None:

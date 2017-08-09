@@ -19,8 +19,8 @@ VAL_DATA_ROOT=${DATA}/
 # already been resized using another tool.
 RESIZE=true
 if $RESIZE; then
-  RESIZE_HEIGHT=28
-  RESIZE_WIDTH=28
+  RESIZE_HEIGHT=70
+  RESIZE_WIDTH=70
 else
   RESIZE_HEIGHT=0
   RESIZE_WIDTH=0

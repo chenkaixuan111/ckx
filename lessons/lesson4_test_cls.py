@@ -1,3 +1,4 @@
+#coding=utf-8
 import caffe
 import json
 import numpy as np
@@ -5,6 +6,9 @@ import os
 import cv2
 import shutil
 import copy
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class CaffeCls(object):
     def __init__(self, 
@@ -43,9 +47,11 @@ class CaffeCls(object):
                 reverse=True)            
             output_tag_to_probas = []
             for index in output_prob_index:
+		jieguo.append(str(index))
                 item = (self.y_tag_json[str(index)],
                         output_prob[index])
                 output_tag_to_probas.append(item)
+		break;
             # output_tag_to_probas = output_tag_to_probas[:2]
             output_tag_to_max_proba.append(output_tag_to_probas)
         return output_tag_to_max_proba
@@ -68,11 +74,12 @@ if __name__ == "__main__":
     char_w = 28
     char_h = 28
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    data_dir_path = "/workspace/caffe_dataset_lower_eng/images/20"
+    data_dir_path = "/workspace/wenzi"
     image_list = []
     image_paths = []
+    jieguo=[]
     for image_path in os.listdir(data_dir_path):
-        if image_path.endswith(".jpg"):
+        if image_path.endswith(".png"):
             image_paths.append(image_path)
             image = cv2.imread(os.path.join(data_dir_path, image_path), 0)
             image = cv2.resize(image, (char_w, char_h), interpolation = cv2.INTER_CUBIC)
@@ -87,6 +94,13 @@ if __name__ == "__main__":
     cls = CaffeCls(path_model_def, model_weights, path_y_tag,
                    width=char_w, height=char_h)
     ret = cls.predict_cv2_imgs(images)
+    baocun=open("bc.txt","w");
     for i, item in enumerate(ret):
         print(image_paths[i])
-        print(item[0])
+#        print(item[0])
+	foo=item[0][0]
+#	bar=foo[1:len(foo)]
+	print(jieguo[i])
+	print foo.encode('utf-8')
+	baocun.write(image_paths[i]+' '+jieguo[i]+' '+foo.encode('utf-8')+'\n')	
+    baocun.close()
